@@ -6,21 +6,42 @@ export default function Dashboard() {
 
     return (
         <div className="space-y-5">
-            <section className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl shadow-slate-950/30 backdrop-blur">
-                <p className="text-xs uppercase tracking-[0.2em] text-sky-300/70">Resumen</p>
-                <h2 className="mt-1 text-2xl font-bold tracking-tight">Dashboard</h2>
-                <p className="mt-2 text-slate-200">
-                    Logueado como <b>{user?.username}</b> {isAdmin ? "(ADMIN)" : "(USER)"}
-                </p>
-                <p className="mt-2 max-w-2xl text-sm text-slate-300/90">
-                    Gestiona tus pendientes y recordatorios futuros desde una interfaz clara para que no olvides lo importante.
-                </p>
+            <section className="grid gap-5 rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl shadow-slate-950/30 backdrop-blur lg:grid-cols-[1.05fr_0.95fr]">
+                <div>
+                    <p className="text-xs uppercase tracking-[0.2em] text-sky-300/70">Bienvenida</p>
+                    <h2 className="mt-1 text-3xl font-bold tracking-tight">Inicio</h2>
+                    <p className="mt-3 text-slate-200">
+                        Hola, <b>{user?.username}</b> {isAdmin ? "(ADMIN)" : "(USER)"}. Este espacio está diseñado para
+                        ayudarte a registrar tareas futuras, crear hábitos de memoria y mantener tus pendientes a la vista.
+                    </p>
+                    <p className="mt-3 text-sm text-slate-300/90">
+                        Pensando en el cuidado de personas mayores y en la prevención del olvido por condiciones como el
+                        Alzheimer, esta página busca ser una ayuda diaria: simple, clara y útil para recordar lo importante.
+                    </p>
+                </div>
+
+                <div className="overflow-hidden rounded-2xl border border-white/10 bg-slate-950/60">
+                    <video
+                        className="h-full max-h-[280px] w-full object-cover"
+                        controls
+                        muted
+                        loop
+                        playsInline
+                        poster="https://images.pexels.com/photos/7551686/pexels-photo-7551686.jpeg?auto=compress&cs=tinysrgb&w=1200"
+                    >
+                        <source
+                            src="https://www.youtube.com/watch?v=hIcXQh5ie1I"
+                            type="video/mp4"
+                        />
+                        Tu navegador no soporta video HTML5.
+                    </video>
+                </div>
             </section>
 
             <div className="grid grid-cols-3 gap-4 md:grid-cols-2 sm:grid-cols-1">
-                <Card title="Rutas seguras" text="React Router + ProtectedRoute + AdminRoute" />
-                <Card title="Conexión API" text="GET/POST/PUT/PATCH/DELETE con fetch (sin Axios)" />
-                <Card title="Enfoque responsive" text="Diseño adaptable para escritorio, tablet y móvil" />
+                <Card title="Recuerda lo importante" text="Anota tareas futuras y evita que se te pasen actividades clave." />
+                <Card title="Apoyo para la memoria" text="Una interfaz clara para acompañar rutinas y reforzar recordatorios diarios." />
+                <Card title="Organización simple" text="Consulta, marca y edita pendientes de forma rápida en cualquier dispositivo." />
             </div>
         </div>
     );
