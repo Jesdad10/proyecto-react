@@ -1,19 +1,13 @@
 import { useMemo, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-
-const BASE = "https://dummyjson.com";
-
-async function fetchUsers(limit = 30, skip = 0) {
-    const r = await fetch(`${BASE}/users?limit=${limit}&skip=${skip}`);
-    const data = await r.json();
-    if (!r.ok) throw new Error(data?.message || "Error cargando usuarios");
-    return data;
-}
+import { toast } from "react-toastify";
+import { usersService } from "../services/users.service";
 
 export default function AdminUsers() {
     const [q, setQ] = useState("");
     const navigate = useNavigate();
+    const qc = useQueryClient();
 
     const { data, isLoading, isError, error } = useQuery({
         queryKey: ["admin-users", 30, 0],
@@ -102,9 +96,18 @@ export default function AdminUsers() {
                                 </div>
                             </div>
 
-                            <span className="shrink-0 rounded-lg border border-white/20 bg-white/10 px-2 py-1 text-xs text-slate-100">
-                                ID {u.id}
-                            </span>
+                            <div className="flex shrink-0 flex-col items-end gap-2">
+                                <span className="rounded-lg border border-white/20 bg-white/10 px-2 py-1 text-xs text-slate-100">
+                                    ID {u.id}
+                                </span>
+                                <button
+                                    onClick={() => deleteMutation.mutate(u.id)}
+                                    disabled={deleteMutation.isPending}
+                                    className="rounded-lg border border-red-300/50 bg-red-400/20 px-3 py-1.5 text-xs font-semibold text-red-100 transition hover:bg-red-400/30 disabled:opacity-60"
+                                >
+                                    Borrar usuario
+                                </button>
+                            </div>
                         </div>
                     </div>
                 ))}

@@ -314,7 +314,7 @@ export default function Todos() {
                                     <button
                                         onClick={() => toggleCompleted(t)}
                                         disabled={patchMutation.isPending}
-                                        className="rounded-xl border border-white/15 bg-white/5 px-3 py-1.5 text-sm transition hover:bg-white/10"
+                                        className="min-w-[150px] rounded-xl border border-white/15 bg-white/5 px-3 py-1.5 text-sm text-center transition hover:bg-white/10"
                                     >
                                         {t.completed ? "Marcar pendiente" : "Completar"}
                                     </button>
