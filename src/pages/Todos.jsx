@@ -26,12 +26,29 @@ export default function Todos() {
         queryFn: () => todosService.list(30, 0),
     });
 
+    const updateTodoLocal = (id, updater) => {
+        qc.setQueryData(["todos"], (old) => {
+            if (!old) return old;
+            return {
+                ...old,
+                todos: (old.todos || []).map((t) => (t.id === id ? updater(t) : t)),
+            };
+        });
+    };
+
     const addMutation = useMutation({
         mutationFn: (payload) => todosService.add(payload),
         onSuccess: (created) => {
+            const createdNormalized = {
+                ...created,
+                completed: null,
+                _localOnly: true,
+                _localId: `${created.id}-${Date.now()}`,
+            };
+
             qc.setQueryData(["todos"], (old) => {
                 if (!old) return old;
-                return { ...old, todos: [created, ...(old.todos || [])], total: (old.total ?? 0) + 1 };
+                return { ...old, todos: [createdNormalized, ...(old.todos || [])], total: (old.total ?? 0) + 1 };
             });
         },
         onError: (e) => toast.error(e.message),
@@ -163,11 +180,24 @@ export default function Todos() {
                 });
                 toast.info("Borrado cancelado");
             },
-            onCommit: () => deleteMutation.mutate(todoItem.id),
+            onCommit: () => {
+                if (todoItem?._localOnly) {
+                    toast.success("Tarea local borrada");
+                    return;
+                }
+                deleteMutation.mutate(todoItem.id);
+            },
         });
     };
 
     const toggleCompleted = (t) => {
+        if (t?._localOnly) {
+            const nextCompleted = t.completed === true ? false : true;
+            updateTodoLocal(t.id, (old) => ({ ...old, completed: nextCompleted }));
+            toast.success("Estado actualizado (local)");
+            return;
+        }
+
         patchMutation.mutate({ id: t.id, payload: { completed: !t.completed } });
     };
 
@@ -180,6 +210,15 @@ export default function Todos() {
     const saveEdit = () => {
         const text = editValue.trim();
         if (!editItem || !text) return;
+
+        if (editItem?._localOnly) {
+            updateTodoLocal(editItem.id, (old) => ({ ...old, todo: text }));
+            toast.success("Tarea local editada");
+            setEditOpen(false);
+            setEditItem(null);
+            return;
+        }
+
         putMutation.mutate({
             id: editItem.id,
             payload: { todo: text, completed: !!editItem.completed, userId: editItem.userId },
@@ -191,8 +230,8 @@ export default function Todos() {
     const todos = data?.todos || [];
     const stats = useMemo(() => {
         const total = todos.length;
-        const done = todos.filter((t) => t.completed).length;
-        const pending = total - done;
+        const done = todos.filter((t) => t.completed === true).length;
+        const pending = todos.filter((t) => t.completed === false).length;
         return { total, done, pending };
     }, [todos]);
 
@@ -205,8 +244,8 @@ export default function Todos() {
             })
             .filter((t) => {
                 if (filter === "all") return true;
-                if (filter === "done") return t.completed;
-                return !t.completed;
+                if (filter === "done") return t.completed === true;
+                return t.completed === false;
             });
     }, [todos, q, filter]);
 
@@ -286,7 +325,7 @@ export default function Todos() {
                 <div className="grid grid-cols-2 gap-4 sm:grid-cols-1">
                     {visible.map((t) => (
                         <article
-                            key={t.id}
+                            key={t._localId || t.id}
                             className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 backdrop-blur transition hover:bg-white/[0.07]"
                         >
                             <div className="flex items-start justify-between gap-3">
@@ -298,12 +337,14 @@ export default function Todos() {
                                         <span
                                             className={[
                                                 "rounded-lg border px-2 py-0.5 text-xs",
-                                                t.completed
+                                                t.completed === true
                                                     ? "border-emerald-400/40 bg-emerald-500/15 text-emerald-200"
-                                                    : "border-amber-400/40 bg-amber-500/15 text-amber-100",
+                                                    : t.completed === false
+                                                        ? "border-amber-400/40 bg-amber-500/15 text-amber-100"
+                                                        : "border-slate-400/40 bg-slate-400/15 text-slate-200",
                                             ].join(" ")}
                                         >
-                                            {t.completed ? "Hecha" : "Pendiente"}
+                                            {t.completed === true ? "Hecha" : t.completed === false ? "Pendiente" : "Sin estado"}
                                         </span>
                                     </div>
 
@@ -313,10 +354,10 @@ export default function Todos() {
                                 <div className="flex flex-col gap-2">
                                     <button
                                         onClick={() => toggleCompleted(t)}
-                                        disabled={patchMutation.isPending}
+                                        disabled={patchMutation.isPending && !t?._localOnly}
                                         className="min-w-[150px] rounded-xl border border-white/15 bg-white/5 px-3 py-1.5 text-sm text-center transition hover:bg-white/10"
                                     >
-                                        {t.completed ? "Marcar pendiente" : "Completar"}
+                                        {t.completed === true ? "Marcar pendiente" : "Completar"}
                                     </button>
 
                                     <button
