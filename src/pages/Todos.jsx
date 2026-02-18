@@ -12,7 +12,7 @@ export default function Todos() {
 
     const [newTodo, setNewTodo] = useState("");
     const [q, setQ] = useState("");
-    const [filter, setFilter] = useState("all"); // all | pending | done
+    const [filter, setFilter] = useState("all");
 
     const [editOpen, setEditOpen] = useState(false);
     const [editValue, setEditValue] = useState("");
@@ -144,7 +144,6 @@ export default function Todos() {
     const requestDelete = (todoItem) => {
         const key = `del-${todoItem.id}-${Date.now()}`;
 
-        // UI inmediata (se nota el borrado)
         qc.setQueryData(["todos"], (old) => {
             if (!old) return old;
             return {
@@ -181,7 +180,6 @@ export default function Todos() {
     const saveEdit = () => {
         const text = editValue.trim();
         if (!editItem || !text) return;
-        // PUT defendible: enviamos todo “lo importante”
         putMutation.mutate({
             id: editItem.id,
             payload: { todo: text, completed: !!editItem.completed, userId: editItem.userId },
@@ -216,42 +214,41 @@ export default function Todos() {
         return <div className="text-slate-300">Cargando tareas…</div>;
     }
     if (isError) {
-        return <div className="text-red-400">{error.message}</div>;
+        return <div className="text-red-300">{error.message}</div>;
     }
 
     return (
-        <div className="space-y-5">
-            {/* Header */}
-            <div className="rounded-2xl border border-slate-800 bg-slate-900/30 p-5">
+        <div className="space-y-6">
+            <section className="rounded-3xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur-xl">
                 <div className="flex items-start justify-between gap-4 md:flex-col">
                     <div>
-                        <h2 className="text-2xl font-bold tracking-tight">Tareas</h2>
-                        <p className="mt-1 text-sm text-slate-400">
-                            CRUD completo con DummyJSON: <b>GET</b>, <b>POST</b>, <b>PUT</b>, <b>PATCH</b>, <b>DELETE</b>.
+                        <p className="text-xs uppercase tracking-[0.22em] text-sky-300/80">Panel de tareas</p>
+                        <h2 className="mt-1 text-3xl font-bold tracking-tight">Tus recordatorios futuros</h2>
+                        <p className="mt-2 text-sm text-slate-300">
+                            Mantén el mismo flujo CRUD, ahora con una vista más clara para planificar lo que debes hacer.
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-3 gap-2 md:w-full">
+                    <div className="grid grid-cols-3 gap-3 md:w-full">
                         <Stat label="Total" value={stats.total} />
                         <Stat label="Pendientes" value={stats.pending} />
                         <Stat label="Hechas" value={stats.done} />
                     </div>
                 </div>
 
-                {/* Controls */}
-                <div className="mt-4 grid grid-cols-12 gap-3">
+                <div className="mt-5 grid grid-cols-12 gap-3">
                     <div className="col-span-6 md:col-span-12">
                         <div className="flex gap-2 md:flex-col">
                             <input
                                 value={newTodo}
                                 onChange={(e) => setNewTodo(e.target.value)}
                                 placeholder="Nueva tarea..."
-                                className="flex-1 rounded-xl bg-slate-950 border border-slate-800 px-3 py-2 outline-none focus:border-sky-400/60"
+                                className="flex-1 rounded-xl border border-white/15 bg-slate-950/70 px-3 py-2.5 outline-none transition focus:border-sky-300/70 focus:ring-2 focus:ring-sky-500/20"
                             />
                             <button
                                 onClick={requestAdd}
                                 disabled={!newTodo.trim() || addMutation.isPending}
-                                className="rounded-xl bg-sky-500/20 border border-sky-400/40 px-4 py-2 font-semibold hover:bg-sky-500/30 disabled:opacity-60 md:w-full"
+                                className="rounded-xl border border-sky-300/40 bg-sky-500/20 px-4 py-2.5 font-semibold transition hover:bg-sky-500/30 disabled:opacity-60 md:w-full"
                             >
                                 Añadir
                             </button>
@@ -263,7 +260,7 @@ export default function Todos() {
                             value={q}
                             onChange={(e) => setQ(e.target.value)}
                             placeholder="Buscar..."
-                            className="w-full rounded-xl bg-slate-950 border border-slate-800 px-3 py-2 outline-none focus:border-sky-400/60"
+                            className="w-full rounded-xl border border-white/15 bg-slate-950/70 px-3 py-2.5 outline-none transition focus:border-sky-300/70 focus:ring-2 focus:ring-sky-500/20"
                         />
                     </div>
 
@@ -271,7 +268,7 @@ export default function Todos() {
                         <select
                             value={filter}
                             onChange={(e) => setFilter(e.target.value)}
-                            className="w-full rounded-xl bg-slate-950 border border-slate-800 px-3 py-2 outline-none focus:border-sky-400/60"
+                            className="w-full rounded-xl border border-white/15 bg-slate-950/70 px-3 py-2.5 outline-none transition focus:border-sky-300/70"
                         >
                             <option value="all">Todas</option>
                             <option value="pending">Pendientes</option>
@@ -279,81 +276,77 @@ export default function Todos() {
                         </select>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            {/* List */}
             {visible.length === 0 ? (
-                <div className="rounded-2xl border border-slate-800 bg-slate-900/20 p-10 text-center text-slate-300">
+                <div className="rounded-2xl border border-dashed border-white/20 bg-white/[0.03] p-10 text-center text-slate-300">
                     No hay tareas con ese filtro.
                 </div>
             ) : (
-                <div className="grid grid-cols-2 gap-3 sm:grid-cols-1">
+                <div className="grid grid-cols-2 gap-4 sm:grid-cols-1">
                     {visible.map((t) => (
-                        <div
+                        <article
                             key={t.id}
-                            className="rounded-2xl border border-slate-800 bg-slate-900/20 p-4"
+                            className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 backdrop-blur transition hover:bg-white/[0.07]"
                         >
                             <div className="flex items-start justify-between gap-3">
                                 <div className="min-w-0">
                                     <div className="flex items-center gap-2">
-                                        <span className="text-xs rounded-lg border border-slate-700 px-2 py-0.5 text-slate-300">
+                                        <span className="rounded-lg border border-white/15 px-2 py-0.5 text-xs text-slate-300">
                                             #{t.id}
                                         </span>
                                         <span
                                             className={[
-                                                "text-xs rounded-lg border px-2 py-0.5",
+                                                "rounded-lg border px-2 py-0.5 text-xs",
                                                 t.completed
-                                                    ? "border-green-500/40 bg-green-500/10 text-green-300"
-                                                    : "border-yellow-500/40 bg-yellow-500/10 text-yellow-200",
+                                                    ? "border-emerald-400/40 bg-emerald-500/15 text-emerald-200"
+                                                    : "border-amber-400/40 bg-amber-500/15 text-amber-100",
                                             ].join(" ")}
                                         >
                                             {t.completed ? "Hecha" : "Pendiente"}
                                         </span>
                                     </div>
 
-                                    <div className="mt-2 font-semibold break-words">
-                                        {t.todo}
-                                    </div>
+                                    <p className="mt-2 break-words text-base font-semibold text-slate-100">{t.todo}</p>
                                 </div>
 
                                 <div className="flex flex-col gap-2">
                                     <button
                                         onClick={() => toggleCompleted(t)}
                                         disabled={patchMutation.isPending}
-                                        className="rounded-xl border border-slate-700 px-3 py-1.5 hover:bg-slate-900"
+                                        className="min-w-[150px] rounded-xl border border-white/15 bg-white/5 px-3 py-1.5 text-sm text-center transition hover:bg-white/10"
                                     >
                                         {t.completed ? "Marcar pendiente" : "Completar"}
                                     </button>
 
                                     <button
                                         onClick={() => openEdit(t)}
-                                        className="rounded-xl border border-slate-700 px-3 py-1.5 hover:bg-slate-900"
+                                        className="rounded-xl border border-white/15 bg-white/5 px-3 py-1.5 text-sm transition hover:bg-white/10"
                                     >
                                         Editar
                                     </button>
 
                                     <button
                                         onClick={() => requestDelete(t)}
-                                        className="rounded-xl border border-red-500/40 bg-red-500/10 px-3 py-1.5 hover:bg-red-500/20"
+                                        className="rounded-xl border border-red-300/40 bg-red-500/15 px-3 py-1.5 text-sm transition hover:bg-red-500/25"
                                     >
                                         Borrar
                                     </button>
                                 </div>
                             </div>
-                        </div>
+                        </article>
                     ))}
                 </div>
             )}
 
-            {/* Modal Edit */}
             {editOpen && (
-                <div className="fixed inset-0 z-50 grid place-items-center bg-black/60 p-4">
-                    <div className="w-full max-w-lg rounded-2xl border border-slate-800 bg-slate-950 p-5">
+                <div className="fixed inset-0 z-50 grid place-items-center bg-black/70 p-4">
+                    <div className="w-full max-w-lg rounded-3xl border border-white/15 bg-slate-950/90 p-5 shadow-2xl backdrop-blur">
                         <div className="flex items-center justify-between gap-3">
                             <h3 className="text-lg font-bold">Editar tarea</h3>
                             <button
                                 onClick={() => setEditOpen(false)}
-                                className="rounded-xl border border-slate-700 px-3 py-1.5 hover:bg-slate-900"
+                                className="rounded-xl border border-white/15 bg-white/5 px-3 py-1.5 hover:bg-white/10"
                             >
                                 Cerrar
                             </button>
@@ -362,20 +355,20 @@ export default function Todos() {
                         <textarea
                             value={editValue}
                             onChange={(e) => setEditValue(e.target.value)}
-                            className="mt-3 w-full min-h-[110px] rounded-xl bg-slate-950 border border-slate-800 px-3 py-2 outline-none focus:border-sky-400/60"
+                            className="mt-3 min-h-[110px] w-full rounded-xl border border-white/15 bg-slate-950/70 px-3 py-2 outline-none transition focus:border-sky-300/70 focus:ring-2 focus:ring-sky-500/20"
                         />
 
                         <div className="mt-4 flex gap-2 md:flex-col">
                             <button
                                 onClick={saveEdit}
                                 disabled={!editValue.trim() || putMutation.isPending}
-                                className="flex-1 rounded-xl bg-sky-500/20 border border-sky-400/40 px-4 py-2 font-semibold hover:bg-sky-500/30 disabled:opacity-60"
+                                className="flex-1 rounded-xl border border-sky-300/40 bg-sky-500/20 px-4 py-2 font-semibold transition hover:bg-sky-500/30 disabled:opacity-60"
                             >
                                 Guardar (PUT)
                             </button>
                             <button
                                 onClick={() => setEditOpen(false)}
-                                className="flex-1 rounded-xl border border-slate-700 px-4 py-2 hover:bg-slate-900"
+                                className="flex-1 rounded-xl border border-white/15 bg-white/5 px-4 py-2 transition hover:bg-white/10"
                             >
                                 Cancelar
                             </button>
@@ -389,9 +382,9 @@ export default function Todos() {
 
 function Stat({ label, value }) {
     return (
-        <div className="rounded-2xl border border-slate-800 bg-slate-900/20 p-3">
-            <div className="text-xs text-slate-400">{label}</div>
-            <div className="text-lg font-bold">{value}</div>
+        <div className="rounded-2xl border border-white/10 bg-white/[0.06] p-3 text-center">
+            <div className="text-xs uppercase tracking-wider text-slate-300">{label}</div>
+            <div className="text-lg font-bold text-slate-100">{value}</div>
         </div>
     );
 }

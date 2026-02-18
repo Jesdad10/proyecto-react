@@ -1,21 +1,33 @@
 import { useMemo, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-
-const BASE = "https://dummyjson.com";
-
-async function fetchUsers(limit = 30, skip = 0) {
-    const r = await fetch(`${BASE}/users?limit=${limit}&skip=${skip}`);
-    const data = await r.json();
-    if (!r.ok) throw new Error(data?.message || "Error cargando usuarios");
-    return data; // { users, total, limit, skip }
-}
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { usersService } from "../services/users.service";
 
 export default function AdminUsers() {
     const [q, setQ] = useState("");
+    const navigate = useNavigate();
+    const qc = useQueryClient();
 
     const { data, isLoading, isError, error } = useQuery({
         queryKey: ["admin-users", 30, 0],
-        queryFn: () => fetchUsers(30, 0),
+        queryFn: () => usersService.list(30, 0),
+    });
+
+    const deleteMutation = useMutation({
+        mutationFn: (id) => usersService.remove(id),
+        onSuccess: (_deleted, id) => {
+            qc.setQueryData(["admin-users", 30, 0], (old) => {
+                if (!old) return old;
+                return {
+                    ...old,
+                    users: (old.users || []).filter((u) => u.id !== id),
+                    total: Math.max(0, (old.total ?? 0) - 1),
+                };
+            });
+            toast.success("Usuario borrado");
+        },
+        onError: (e) => toast.error(e.message),
     });
 
     const users = data?.users || [];
@@ -30,14 +42,21 @@ export default function AdminUsers() {
         });
     }, [users, q]);
 
-    if (isLoading) return <div className="text-slate-300">Cargando usuarios...</div>;
-    if (isError) return <div className="text-red-400">{error.message}</div>;
+    if (isLoading) return <div className="text-slate-100">Cargando usuarios...</div>;
+    if (isError) return <div className="text-red-300">{error.message}</div>;
 
     return (
         <div className="space-y-4">
-            <div className="rounded-2xl border border-slate-800 bg-slate-900/30 p-5">
+            <button
+                onClick={() => navigate(-1)}
+                className="rounded-xl border border-white/20 bg-white/10 px-4 py-2 text-sm font-medium transition hover:bg-white/20"
+            >
+                ← Volver
+            </button>
+
+            <div className="rounded-2xl border border-white/20 bg-white/10 p-5 backdrop-blur">
                 <h2 className="text-2xl font-bold">Usuarios (Admin)</h2>
-                <p className="mt-1 text-sm text-slate-400">
+                <p className="mt-1 text-sm text-slate-200/90">
                     Listado de usuarios desde DummyJSON (sin contraseñas, como debe ser).
                 </p>
 
@@ -45,44 +64,50 @@ export default function AdminUsers() {
                     value={q}
                     onChange={(e) => setQ(e.target.value)}
                     placeholder="Buscar por nombre, username o email..."
-                    className="mt-4 w-full rounded-xl bg-slate-950 border border-slate-800 px-3 py-2 outline-none focus:border-sky-400/60"
+                    className="mt-4 w-full rounded-xl border border-white/20 bg-indigo-950/70 px-3 py-2 outline-none transition focus:border-amber-200/80"
                 />
 
-                <div className="mt-3 text-xs text-slate-500">
+                <div className="mt-3 text-xs text-slate-200/80">
                     Mostrando {filtered.length} de {users.length}
                 </div>
             </div>
 
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-1">
                 {filtered.map((u) => (
-                    <div
-                        key={u.id}
-                        className="rounded-2xl border border-slate-800 bg-slate-900/20 p-4"
-                    >
+                    <div key={u.id} className="rounded-2xl border border-white/20 bg-white/10 p-4 backdrop-blur">
                         <div className="flex items-start justify-between gap-3">
                             <div className="min-w-0">
-                                <div className="font-semibold break-words">
+                                <div className="break-words font-semibold text-white">
                                     {u.firstName} {u.lastName}
                                 </div>
-                                <div className="text-sm text-slate-400">@{u.username}</div>
+                                <div className="text-sm text-slate-200/90">@{u.username}</div>
 
-                                <div className="mt-3 text-sm">
-                                    <span className="text-slate-400">Email:</span>{" "}
+                                <div className="mt-3 text-sm text-slate-100">
+                                    <span className="text-slate-200/90">Email:</span>{" "}
                                     <span className="break-words">{u.email}</span>
                                 </div>
 
-                                <div className="text-sm">
-                                    <span className="text-slate-400">Edad:</span> {u.age}
+                                <div className="text-sm text-slate-100">
+                                    <span className="text-slate-200/90">Edad:</span> {u.age}
                                 </div>
 
-                                <div className="text-sm">
-                                    <span className="text-slate-400">Ciudad:</span> {u.address?.city || "-"}
+                                <div className="text-sm text-slate-100">
+                                    <span className="text-slate-200/90">Ciudad:</span> {u.address?.city || "-"}
                                 </div>
                             </div>
 
-                            <span className="shrink-0 text-xs rounded-lg border border-slate-700 px-2 py-1 text-slate-300">
-                                ID {u.id}
-                            </span>
+                            <div className="flex shrink-0 flex-col items-end gap-2">
+                                <span className="rounded-lg border border-white/20 bg-white/10 px-2 py-1 text-xs text-slate-100">
+                                    ID {u.id}
+                                </span>
+                                <button
+                                    onClick={() => deleteMutation.mutate(u.id)}
+                                    disabled={deleteMutation.isPending}
+                                    className="rounded-lg border border-red-300/50 bg-red-400/20 px-3 py-1.5 text-xs font-semibold text-red-100 transition hover:bg-red-400/30 disabled:opacity-60"
+                                >
+                                    Borrar usuario
+                                </button>
+                            </div>
                         </div>
                     </div>
                 ))}
