@@ -1,5 +1,12 @@
 import { useAuthStore } from "../store/auth.store";
 
+const tips = [
+    "Crea tareas cortas y claras para recordar mejor.",
+    "Marca como hecha cada actividad para reforzar rutina.",
+    "Revisa tus pendientes al inicio y al final del día.",
+    "Usa títulos simples: medicación, llamada, cita, etc.",
+];
+
 export default function Dashboard() {
     const user = useAuthStore((s) => s.user);
     const isAdmin = useAuthStore((s) => s.isAdmin);
