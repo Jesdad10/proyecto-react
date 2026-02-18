@@ -7,32 +7,35 @@ export default function AppLayout() {
     const logout = useAuthStore((s) => s.logout);
 
     return (
-        <div className="min-h-screen bg-slate-950 text-slate-100">
-            {/* HEADER */}
-            <header className="sticky top-0 z-10 border-b border-slate-800 bg-slate-950/80 backdrop-blur">
-                <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
-                    <div className="font-bold tracking-tight">
-                        Proyecto React Evaluación
+        <div className="relative min-h-screen overflow-hidden text-slate-100">
+            <div className="pointer-events-none absolute -left-20 -top-20 h-72 w-72 rounded-full bg-yellow-300/25 blur-3xl" />
+            <div className="pointer-events-none absolute right-0 top-28 h-72 w-72 rounded-full bg-pink-400/20 blur-3xl" />
+            <div className="pointer-events-none absolute bottom-0 left-1/2 h-80 w-80 -translate-x-1/2 rounded-full bg-cyan-400/15 blur-3xl" />
+
+            <header className="sticky top-0 z-10 border-b border-white/15 bg-indigo-950/70 backdrop-blur-xl">
+                <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
+                    <div>
+                        <p className="text-xs uppercase tracking-[0.25em] text-amber-200/85">Organizador personal</p>
+                        <h1 className="text-lg font-semibold tracking-tight">Proyecto React Evaluación</h1>
                     </div>
 
                     <div className="flex items-center gap-3">
-                        <span className="text-sm text-slate-300">
-                            {user?.username} {isAdmin ? "(admin)" : "(usuario)"}
+                        <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs text-slate-100">
+                            {user?.username} {isAdmin ? "• admin" : "• usuario"}
                         </span>
 
                         <button
                             onClick={logout}
-                            className="rounded-xl border border-slate-700 px-3 py-1.5 hover:bg-slate-900 transition"
+                            className="rounded-xl border border-white/20 bg-white/10 px-3 py-1.5 text-sm transition hover:bg-white/20"
                         >
                             Salir
                         </button>
                     </div>
                 </div>
 
-                {/* NAV */}
-                <nav className="mx-auto max-w-6xl px-4 pb-3 flex gap-2 flex-wrap">
+                <nav className="mx-auto flex max-w-6xl flex-wrap gap-2 px-4 pb-4">
                     <Tab to="/dashboard" end>
-                        Dashboard
+                        Inicio
                     </Tab>
 
                     <Tab to="/tareas">
@@ -53,15 +56,13 @@ export default function AppLayout() {
                 </nav>
             </header>
 
-            {/* CONTENIDO */}
-            <main className="mx-auto max-w-6xl px-4 py-6">
+            <main className="relative mx-auto max-w-6xl px-4 py-8">
                 <Outlet />
             </main>
         </div>
     );
 }
 
-/* COMPONENTE TAB */
 function Tab({ to, end, children }) {
     return (
         <NavLink
@@ -69,10 +70,10 @@ function Tab({ to, end, children }) {
             end={end}
             className={({ isActive }) =>
                 [
-                    "rounded-xl px-3 py-2 text-sm border transition",
+                    "rounded-xl border px-4 py-2 text-sm transition-all",
                     isActive
-                        ? "border-sky-400/40 bg-sky-500/10 text-sky-200"
-                        : "border-slate-800 hover:bg-slate-900 text-slate-200",
+                        ? "border-amber-200/60 bg-amber-300/20 text-amber-100 shadow-[0_0_0_1px_rgba(252,211,77,0.25)]"
+                        : "border-white/20 bg-white/10 text-slate-100 hover:bg-white/20",
                 ].join(" ")
             }
         >
