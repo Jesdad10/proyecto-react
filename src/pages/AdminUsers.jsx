@@ -17,7 +17,23 @@ export default function AdminUsers() {
 
     const { data, isLoading, isError, error } = useQuery({
         queryKey: ["admin-users", 30, 0],
-        queryFn: () => fetchUsers(30, 0),
+        queryFn: () => usersService.list(30, 0),
+    });
+
+    const deleteMutation = useMutation({
+        mutationFn: (id) => usersService.remove(id),
+        onSuccess: (_deleted, id) => {
+            qc.setQueryData(["admin-users", 30, 0], (old) => {
+                if (!old) return old;
+                return {
+                    ...old,
+                    users: (old.users || []).filter((u) => u.id !== id),
+                    total: Math.max(0, (old.total ?? 0) - 1),
+                };
+            });
+            toast.success("Usuario borrado");
+        },
+        onError: (e) => toast.error(e.message),
     });
 
     const users = data?.users || [];

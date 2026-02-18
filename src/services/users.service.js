@@ -14,4 +14,11 @@ export const usersService = {
         if (!r.ok) throw new Error(data?.message || "Error cargando usuario");
         return data;
     },
+
+    remove: async (id) => {
+        const r = await fetch(`${BASE}/users/${id}`, { method: "DELETE" });
+        const data = await r.json();
+        if (!r.ok) throw new Error(data?.message || "Error borrando usuario");
+        return data;
+    },
 };
