@@ -34,7 +34,7 @@ export default function AppLayout() {
 
                 <nav className="mx-auto flex max-w-6xl flex-wrap gap-2 px-4 pb-4">
                     <Tab to="/dashboard" end>
-                        Dashboard
+                        Inicio
                     </Tab>
 
                     <Tab to="/tareas">
