@@ -3,6 +3,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { todosService } from "../services/todos.service";
 import { useAuthStore } from "../store/auth.store";
+import { createPortal } from "react-dom";
+
 
 const UNDO_MS = 4000;
 
@@ -381,43 +383,46 @@ export default function Todos() {
                 </div>
             )}
 
-            {editOpen && (
-                <div className="fixed inset-0 z-50 grid place-items-center bg-emerald-950/45 p-4">
-                    <div className="w-full max-w-lg rounded-3xl border border-emerald-300 bg-white p-5 text-emerald-950 shadow-2xl">
-                        <div className="flex items-center justify-between gap-3">
-                            <h3 className="text-lg font-bold text-emerald-950">Editar tarea</h3>
-                            <button
-                                onClick={() => setEditOpen(false)}
-                                className="rounded-xl border border-emerald-300 bg-white px-3 py-1.5 text-emerald-900 transition hover:bg-emerald-50"
-                            >
-                                Cerrar
-                            </button>
-                        </div>
+            {editOpen &&
+                createPortal(
+                    <div className="fixed inset-0 z-[10000] grid h-dvh w-screen place-items-center bg-emerald-950/45 backdrop-blur-[1px] p-4">
+                        <div className="w-full max-w-lg rounded-3xl border border-emerald-300 bg-white p-5 text-emerald-950 shadow-2xl">
+                            <div className="flex items-center justify-between gap-3">
+                                <h3 className="text-lg font-bold text-emerald-950">Editar tarea</h3>
+                                <button
+                                    onClick={() => setEditOpen(false)}
+                                    className="rounded-xl border border-emerald-300 bg-white px-3 py-1.5 text-emerald-900 transition hover:bg-emerald-50"
+                                >
+                                    Cerrar
+                                </button>
+                            </div>
 
-                        <textarea
-                            value={editValue}
-                            onChange={(e) => setEditValue(e.target.value)}
-                            className="mt-3 min-h-[110px] w-full rounded-xl border border-emerald-300 bg-white px-3 py-2 text-emerald-950 placeholder:text-emerald-500/70 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
-                        />
+                            <textarea
+                                value={editValue}
+                                onChange={(e) => setEditValue(e.target.value)}
+                                className="mt-3 min-h-[110px] w-full rounded-xl border border-emerald-300 bg-white px-3 py-2 text-emerald-950 placeholder:text-emerald-500/70 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
+                            />
 
-                        <div className="mt-4 flex gap-2 md:flex-col">
-                            <button
-                                onClick={saveEdit}
-                                disabled={!editValue.trim() || putMutation.isPending}
-                                className="flex-1 rounded-xl border border-emerald-700 bg-emerald-700 px-4 py-2 font-semibold text-white transition hover:bg-emerald-800 disabled:opacity-60"
-                            >
-                                Guardar (PUT)
-                            </button>
-                            <button
-                                onClick={() => setEditOpen(false)}
-                                className="flex-1 rounded-xl border border-emerald-300 bg-white px-4 py-2 text-emerald-900 transition hover:bg-emerald-50"
-                            >
-                                Cancelar
-                            </button>
+                            <div className="mt-4 flex gap-2 md:flex-col">
+                                <button
+                                    onClick={saveEdit}
+                                    disabled={!editValue.trim() || putMutation.isPending}
+                                    className="flex-1 rounded-xl border border-emerald-700 bg-emerald-700 px-4 py-2 font-semibold text-white transition hover:bg-emerald-800 disabled:opacity-60"
+                                >
+                                    Guardar
+                                </button>
+                                <button
+                                    onClick={() => setEditOpen(false)}
+                                    className="flex-1 rounded-xl border border-emerald-300 bg-white px-4 py-2 text-emerald-900 transition hover:bg-emerald-50"
+                                >
+                                    Cancelar
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            )}
+                    </div>,
+                    document.body
+                )}
+
 
         </div>
     );
