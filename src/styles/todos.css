@@ -349,7 +349,7 @@
     background: rgba(100, 116, 139, .2);
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 990px) {
     .todos-header-row {
         flex-direction: column;
     }
@@ -365,7 +365,7 @@
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
 
     .todos-add-wrap,
     .todos-modal-actions {
@@ -377,8 +377,21 @@
     }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 510px) {
     .todos-grid {
         grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .todos-header-card,
+    .todos-item-card,
+    .todos-modal-card {
+        padding: 1rem;
+    }
+
+    .todos-title {
+        font-size: 1.5rem;
     }
 }

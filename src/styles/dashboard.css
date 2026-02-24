@@ -233,7 +233,7 @@
     max-width: 48rem;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 990px) {
 
     .dashboard-grid-3,
     .dashboard-grid-2 {
@@ -241,10 +241,29 @@
     }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 767px) {
 
     .dashboard-grid-3,
     .dashboard-grid-2 {
         grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 510px) {
+
+    .dashboard-hero,
+    .dashboard-card,
+    .dashboard-cta {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard-title {
+        font-size: 1.5rem;
+    }
+
+    .dashboard-cta-title {
+        font-size: 1.25rem;
     }
 }
