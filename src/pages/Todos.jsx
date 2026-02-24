@@ -258,12 +258,12 @@ export default function Todos() {
 
     return (
         <div className="space-y-6">
-            <section className="rounded-3xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur-xl">
+            <section className="rounded-3xl border border-emerald-200 bg-white/90 p-6">
                 <div className="flex items-start justify-between gap-4 md:flex-col">
                     <div>
-                        <p className="text-xs uppercase tracking-[0.22em] text-sky-300/80">Panel de tareas</p>
+                        <p className="text-xs uppercase tracking-[0.22em] text-emerald-700">Panel de tareas</p>
                         <h2 className="mt-1 text-3xl font-bold tracking-tight">Tus recordatorios futuros</h2>
-                        <p className="mt-2 text-sm text-slate-300">
+                        <p className="mt-2 text-sm text-emerald-800">
                             Mantén el mismo flujo CRUD, ahora con una vista más clara para planificar lo que debes hacer.
                         </p>
                     </div>
@@ -282,12 +282,12 @@ export default function Todos() {
                                 value={newTodo}
                                 onChange={(e) => setNewTodo(e.target.value)}
                                 placeholder="Nueva tarea..."
-                                className="flex-1 rounded-xl border border-white/15 bg-slate-950/70 px-3 py-2.5 outline-none transition focus:border-sky-300/70 focus:ring-2 focus:ring-sky-500/20"
+                                className="flex-1 rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2.5 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
                             />
                             <button
                                 onClick={requestAdd}
                                 disabled={!newTodo.trim() || addMutation.isPending}
-                                className="rounded-xl border border-sky-300/40 bg-sky-500/20 px-4 py-2.5 font-semibold transition hover:bg-sky-500/30 disabled:opacity-60 md:w-full"
+                                className="rounded-xl border border-emerald-400/70 bg-emerald-600 text-white px-4 py-2.5 font-semibold transition hover:bg-emerald-700 disabled:opacity-60 md:w-full"
                             >
                                 Añadir
                             </button>
@@ -299,7 +299,7 @@ export default function Todos() {
                             value={q}
                             onChange={(e) => setQ(e.target.value)}
                             placeholder="Buscar..."
-                            className="w-full rounded-xl border border-white/15 bg-slate-950/70 px-3 py-2.5 outline-none transition focus:border-sky-300/70 focus:ring-2 focus:ring-sky-500/20"
+                            className="w-full rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2.5 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
                         />
                     </div>
 
@@ -307,7 +307,7 @@ export default function Todos() {
                         <select
                             value={filter}
                             onChange={(e) => setFilter(e.target.value)}
-                            className="w-full rounded-xl border border-white/15 bg-slate-950/70 px-3 py-2.5 outline-none transition focus:border-sky-300/70"
+                            className="w-full rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2.5 outline-none transition focus:border-emerald-500"
                         >
                             <option value="all">Todas</option>
                             <option value="pending">Pendientes</option>
@@ -317,8 +317,9 @@ export default function Todos() {
                 </div>
             </section>
 
+
             {visible.length === 0 ? (
-                <div className="rounded-2xl border border-dashed border-white/20 bg-white/[0.03] p-10 text-center text-slate-300">
+                <div className="rounded-2xl border border-dashed border-emerald-300 bg-emerald-50 p-10 text-center text-emerald-800">
                     No hay tareas con ese filtro.
                 </div>
             ) : (
@@ -326,50 +327,50 @@ export default function Todos() {
                     {visible.map((t) => (
                         <article
                             key={t._localId || t.id}
-                            className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 backdrop-blur transition hover:bg-white/[0.07]"
+                            className="rounded-2xl border border-emerald-200 bg-white p-4 transition hover:bg-emerald-50"
                         >
                             <div className="flex items-start justify-between gap-3">
                                 <div className="min-w-0">
                                     <div className="flex items-center gap-2">
-                                        <span className="rounded-lg border border-white/15 px-2 py-0.5 text-xs text-slate-300">
+                                        <span className="rounded-lg border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-xs text-emerald-800">
                                             #{t.id}
                                         </span>
                                         <span
                                             className={[
                                                 "rounded-lg border px-2 py-0.5 text-xs",
                                                 t.completed === true
-                                                    ? "border-emerald-400/40 bg-emerald-500/15 text-emerald-200"
+                                                    ? "border-emerald-300 bg-emerald-100 text-emerald-800"
                                                     : t.completed === false
-                                                        ? "border-amber-400/40 bg-amber-500/15 text-amber-100"
-                                                        : "border-slate-400/40 bg-slate-400/15 text-slate-200",
+                                                        ? "border-amber-300 bg-amber-100 text-amber-800"
+                                                        : "border-slate-300 bg-slate-100 text-slate-700",
                                             ].join(" ")}
                                         >
                                             {t.completed === true ? "Hecha" : t.completed === false ? "Pendiente" : "Sin estado"}
                                         </span>
                                     </div>
 
-                                    <p className="mt-2 break-words text-base font-semibold text-slate-100">{t.todo}</p>
+                                    <p className="mt-2 break-words text-base font-semibold text-emerald-950">{t.todo}</p>
                                 </div>
 
                                 <div className="flex flex-col gap-2">
                                     <button
                                         onClick={() => toggleCompleted(t)}
                                         disabled={patchMutation.isPending && !t?._localOnly}
-                                        className="min-w-[150px] rounded-xl border border-white/15 bg-white/5 px-3 py-1.5 text-sm text-center transition hover:bg-white/10"
+                                        className="min-w-[150px] rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-sm text-center transition hover:bg-emerald-100"
                                     >
                                         {t.completed === true ? "Marcar pendiente" : "Completar"}
                                     </button>
 
                                     <button
                                         onClick={() => openEdit(t)}
-                                        className="rounded-xl border border-white/15 bg-white/5 px-3 py-1.5 text-sm transition hover:bg-white/10"
+                                        className="rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-sm transition hover:bg-emerald-100"
                                     >
                                         Editar
                                     </button>
 
                                     <button
                                         onClick={() => requestDelete(t)}
-                                        className="rounded-xl border border-red-300/40 bg-red-500/15 px-3 py-1.5 text-sm transition hover:bg-red-500/25"
+                                        className="rounded-xl border border-red-300 bg-red-100 px-3 py-1.5 text-sm text-red-700 transition hover:bg-red-200"
                                     >
                                         Borrar
                                     </button>
@@ -381,13 +382,13 @@ export default function Todos() {
             )}
 
             {editOpen && (
-                <div className="fixed inset-0 z-50 grid place-items-center bg-black/70 p-4">
-                    <div className="w-full max-w-lg rounded-3xl border border-white/15 bg-slate-950/90 p-5 shadow-2xl backdrop-blur">
+                <div className="fixed inset-0 z-50 grid place-items-center bg-emerald-950/45 p-4">
+                    <div className="w-full max-w-lg rounded-3xl border border-emerald-300 bg-white p-5 text-emerald-950 shadow-2xl">
                         <div className="flex items-center justify-between gap-3">
-                            <h3 className="text-lg font-bold">Editar tarea</h3>
+                            <h3 className="text-lg font-bold text-emerald-950">Editar tarea</h3>
                             <button
                                 onClick={() => setEditOpen(false)}
-                                className="rounded-xl border border-white/15 bg-white/5 px-3 py-1.5 hover:bg-white/10"
+                                className="rounded-xl border border-emerald-300 bg-white px-3 py-1.5 text-emerald-900 transition hover:bg-emerald-50"
                             >
                                 Cerrar
                             </button>
@@ -396,20 +397,20 @@ export default function Todos() {
                         <textarea
                             value={editValue}
                             onChange={(e) => setEditValue(e.target.value)}
-                            className="mt-3 min-h-[110px] w-full rounded-xl border border-white/15 bg-slate-950/70 px-3 py-2 outline-none transition focus:border-sky-300/70 focus:ring-2 focus:ring-sky-500/20"
+                            className="mt-3 min-h-[110px] w-full rounded-xl border border-emerald-300 bg-white px-3 py-2 text-emerald-950 placeholder:text-emerald-500/70 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
                         />
 
                         <div className="mt-4 flex gap-2 md:flex-col">
                             <button
                                 onClick={saveEdit}
                                 disabled={!editValue.trim() || putMutation.isPending}
-                                className="flex-1 rounded-xl border border-sky-300/40 bg-sky-500/20 px-4 py-2 font-semibold transition hover:bg-sky-500/30 disabled:opacity-60"
+                                className="flex-1 rounded-xl border border-emerald-700 bg-emerald-700 px-4 py-2 font-semibold text-white transition hover:bg-emerald-800 disabled:opacity-60"
                             >
                                 Guardar (PUT)
                             </button>
                             <button
                                 onClick={() => setEditOpen(false)}
-                                className="flex-1 rounded-xl border border-white/15 bg-white/5 px-4 py-2 transition hover:bg-white/10"
+                                className="flex-1 rounded-xl border border-emerald-300 bg-white px-4 py-2 text-emerald-900 transition hover:bg-emerald-50"
                             >
                                 Cancelar
                             </button>
@@ -417,15 +418,17 @@ export default function Todos() {
                     </div>
                 </div>
             )}
+
         </div>
     );
 }
 
 function Stat({ label, value }) {
     return (
-        <div className="rounded-2xl border border-white/10 bg-white/[0.06] p-3 text-center">
-            <div className="text-xs uppercase tracking-wider text-slate-300">{label}</div>
-            <div className="text-lg font-bold text-slate-100">{value}</div>
+        <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-3 text-center">
+            <div className="text-xs uppercase tracking-wider text-emerald-800">{label}</div>
+            <div className="text-lg font-bold text-emerald-950">{value}</div>
         </div>
     );
 }
+

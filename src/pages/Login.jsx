@@ -86,47 +86,47 @@ export default function Login() {
     });
 
     return (
-        <div className="relative grid min-h-screen place-items-center overflow-hidden p-4 text-slate-100">
-            <div className="pointer-events-none absolute -left-24 top-10 h-72 w-72 rounded-full bg-sky-500/20 blur-3xl" />
-            <div className="pointer-events-none absolute -right-10 bottom-10 h-64 w-64 rounded-full bg-emerald-500/15 blur-3xl" />
+        <div className="relative grid min-h-screen place-items-center overflow-hidden p-4 text-emerald-950">
+            <div className="pointer-events-none absolute -left-24 top-10 h-72 w-72 rounded-full bg-emerald-300/30 blur-3xl" />
+            <div className="pointer-events-none absolute -right-10 bottom-10 h-64 w-64 rounded-full bg-emerald-200/30 blur-3xl" />
 
-            <div className="w-full max-w-md rounded-3xl border border-white/15 bg-slate-900/65 p-7 shadow-2xl backdrop-blur-xl">
-                <p className="text-xs uppercase tracking-[0.25em] text-sky-300/80">Recordatorios inteligentes</p>
+            <div className="w-full max-w-md rounded-3xl border border-emerald-200 bg-white/95 p-7 shadow-xl">
+                <p className="text-xs uppercase tracking-[0.25em] text-emerald-700">Recordatorios inteligentes</p>
                 <h1 className="mt-2 text-3xl font-bold tracking-tight">Iniciar sesión</h1>
 
-                <p className="mt-3 text-sm text-slate-300">
+                <p className="mt-3 text-sm text-emerald-900/80">
                     Organiza tus tareas personales futuras y recibe un flujo claro para que siempre recuerdes qué hacer.
                 </p>
-                <p className="mt-2 text-xs text-slate-400">
+                <p className="mt-2 text-xs text-emerald-700/80">
                     Demo DummyJSON:
-                    <span className="ml-2 rounded-md border border-white/15 bg-white/5 px-2 py-0.5 font-mono text-slate-200">
+                    <span className="ml-2 rounded-md border border-emerald-200 bg-emerald-50 px-2 py-0.5 font-mono text-emerald-900">
                         emilys / emilyspass
                     </span>
                 </p>
 
                 <form onSubmit={onSubmit} className="mt-6 space-y-4">
                     <div>
-                        <label className="text-sm text-slate-200">Username</label>
+                        <label className="text-sm text-emerald-900">Username</label>
                         <input
-                            className="mt-1 w-full rounded-xl border border-white/15 bg-slate-950/70 px-3 py-2.5 outline-none transition focus:border-sky-300/70 focus:ring-2 focus:ring-sky-500/20"
+                            className="mt-1 w-full rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2.5 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
                             {...form.register("username")}
                         />
                         {form.formState.errors.username && (
-                            <p className="mt-1 text-sm text-red-300">
+                            <p className="mt-1 text-sm text-red-600">
                                 {form.formState.errors.username.message}
                             </p>
                         )}
                     </div>
 
                     <div>
-                        <label className="text-sm text-slate-200">Password</label>
+                        <label className="text-sm text-emerald-900">Password</label>
                         <input
                             type="password"
-                            className="mt-1 w-full rounded-xl border border-white/15 bg-slate-950/70 px-3 py-2.5 outline-none transition focus:border-sky-300/70 focus:ring-2 focus:ring-sky-500/20"
+                            className="mt-1 w-full rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2.5 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
                             {...form.register("password")}
                         />
                         {form.formState.errors.password && (
-                            <p className="mt-1 text-sm text-red-300">
+                            <p className="mt-1 text-sm text-red-600">
                                 {form.formState.errors.password.message}
                             </p>
                         )}
@@ -135,7 +135,7 @@ export default function Login() {
                     <button
                         type="submit"
                         disabled={loginMutation.isPending}
-                        className="w-full rounded-xl border border-sky-300/40 bg-sky-500/20 px-3 py-2.5 font-semibold transition hover:bg-sky-500/30 disabled:opacity-60"
+                        className="w-full rounded-xl border border-emerald-400/70 bg-emerald-600 px-3 py-2.5 font-semibold text-white transition hover:bg-emerald-700 disabled:opacity-60"
                     >
                         {loginMutation.isPending ? "Entrando..." : "Entrar"}
                     </button>

@@ -3,16 +3,16 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 body {
-  @apply min-h-screen text-slate-100 antialiased;
+  @apply min-h-screen text-emerald-950 antialiased;
   background-image:
-    radial-gradient(circle at 12% 14%, rgba(251, 191, 36, 0.26), transparent 32%),
-    radial-gradient(circle at 85% 16%, rgba(244, 114, 182, 0.22), transparent 35%),
-    radial-gradient(circle at 80% 85%, rgba(34, 211, 238, 0.2), transparent 36%),
-    linear-gradient(145deg, #172554 0%, #1e1b4b 42%, #0f172a 100%);
+    radial-gradient(circle at 12% 14%, rgba(16, 185, 129, 0.16), transparent 35%),
+    radial-gradient(circle at 85% 16%, rgba(134, 239, 172, 0.2), transparent 38%),
+    radial-gradient(circle at 80% 85%, rgba(190, 242, 100, 0.16), transparent 36%),
+    linear-gradient(145deg, #f7fcf8 0%, #ebf7ee 45%, #f5fbf6 100%);
 }
 
 #root {
