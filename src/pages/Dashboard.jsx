@@ -79,11 +79,10 @@ export default function Dashboard() {
                     <div className="aspect-video overflow-hidden rounded-xl">
                         <iframe
                             className="h-full w-full"
-                            src="https://www.youtube.com/embed/b_zXEIe7Sys?autoplay=1&mute=1&rel=0"
-                            title="Video de YouTube sobre apoyo de memoria"
+                            src="https://www.youtube.com/embed/b_zXEIe7Sys?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&fs=0"
+                            title="Video"
                             loading="lazy"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            referrerPolicy="strict-origin-when-cross-origin"
+                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                             allowFullScreen
                         />
 
