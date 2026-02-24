@@ -1,0 +1,141 @@
+.layout-shell {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+    color: #052e2b;
+}
+
+.layout-orb {
+    position: absolute;
+    pointer-events: none;
+    border-radius: 999px;
+    filter: blur(48px);
+}
+
+.layout-orb-left {
+    left: -5rem;
+    top: -5rem;
+    width: 18rem;
+    height: 18rem;
+    background: rgba(167, 243, 208, 0.45);
+}
+
+.layout-orb-right {
+    right: 0;
+    top: 7rem;
+    width: 18rem;
+    height: 18rem;
+    background: rgba(187, 247, 208, 0.4);
+}
+
+.layout-orb-bottom {
+    left: 50%;
+    bottom: 0;
+    width: 20rem;
+    height: 20rem;
+    transform: translateX(-50%);
+    background: rgba(236, 252, 203, 0.45);
+}
+
+.app-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    border-bottom: 1px solid rgba(167, 243, 208, 0.8);
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(16px);
+}
+
+.app-header-row,
+.app-nav,
+.app-main {
+    width: 100%;
+    max-width: 72rem;
+    margin: 0 auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.app-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.app-kicker {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    color: #047857;
+}
+
+.app-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #052e2b;
+}
+
+.app-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.app-user-pill {
+    border: 1px solid #a7f3d0;
+    background: #ecfdf5;
+    border-radius: 999px;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    color: #064e3b;
+}
+
+.app-logout-btn {
+    border: 1px solid #6ee7b7;
+    background: #d1fae5;
+    border-radius: 0.75rem;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+    color: #064e3b;
+    cursor: pointer;
+}
+
+.app-logout-btn:hover {
+    background: #a7f3d0;
+}
+
+.app-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding-bottom: 1rem;
+}
+
+.app-tab {
+    border: 1px solid #a7f3d0;
+    background: rgba(255, 255, 255, 0.8);
+    color: #064e3b;
+    border-radius: 0.75rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    text-decoration: none;
+}
+
+.app-tab:hover {
+    background: #ecfdf5;
+}
+
+.app-tab-active {
+    border-color: #047857;
+    background: #047857;
+    color: #fff;
+    box-shadow: 0 0 0 1px rgba(4, 120, 87, 0.3);
+}
+
+.app-main {
+    position: relative;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}

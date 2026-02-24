@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { usersService } from "../services/users.service";
+import "../styles/admin.css";
 
 export default function AdminUsers() {
     const [q, setQ] = useState("");
@@ -40,61 +41,54 @@ export default function AdminUsers() {
         });
     }, [users, q]);
 
-    if (isLoading) return <div className="text-emerald-900">Cargando usuarios...</div>;
-    if (isError) return <div className="text-red-700">{error.message}</div>;
+    if (isLoading) return <div className="admin-loading">Cargando usuarios...</div>;
+    if (isError) return <div className="admin-error">{error.message}</div>;
 
     return (
-        <div className="space-y-4">
-            <div className="rounded-2xl border border-emerald-200 bg-white/90 p-5 backdrop-blur">
-                <h2 className="text-2xl font-bold text-emerald-950">Usuarios (Admin)</h2>
-                <p className="mt-1 text-sm text-emerald-900/80">
-                    Listado de usuarios desde DummyJSON (sin contraseñas, como debe ser).
-                </p>
+        <div className="admin-users-page">
+            <div className="admin-users-filter-panel">
+                <h2 className="admin-users-title">Usuarios (Admin)</h2>
+                <p className="admin-users-subtitle">Listado de usuarios desde DummyJSON (sin contraseñas, como debe ser).</p>
 
                 <input
                     value={q}
                     onChange={(e) => setQ(e.target.value)}
                     placeholder="Buscar por nombre, username o email..."
-                    className="mt-4 w-full rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 outline-none transition focus:border-emerald-500"
+                    className="admin-users-input"
                 />
 
-                <div className="mt-3 text-xs text-emerald-700">
-                    Mostrando {filtered.length} de {users.length}
-                </div>
+                <div className="admin-users-count">Mostrando {filtered.length} de {users.length}</div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-1">
+            <div className="admin-users-grid">
                 {filtered.map((u) => (
-                    <div key={u.id} className="rounded-2xl border border-emerald-200 bg-white/90 p-4 backdrop-blur">
-                        <div className="flex items-start justify-between gap-3">
-                            <div className="min-w-0">
-                                <div className="break-words font-semibold text-emerald-950">
+                    <div key={u.id} className="admin-users-card">
+                        <div className="admin-users-card-row">
+                            <div className="admin-users-content">
+                                <div className="admin-users-name">
                                     {u.firstName} {u.lastName}
                                 </div>
-                                <div className="text-sm text-emerald-900/80">@{u.username}</div>
+                                <div className="admin-users-username">@{u.username}</div>
 
-                                <div className="mt-3 text-sm text-emerald-900">
-                                    <span className="text-emerald-900/80">Email:</span>{" "}
-                                    <span className="break-words">{u.email}</span>
+                                <div className="admin-users-detail">
+                                    <span className="admin-users-label">Email:</span> <span>{u.email}</span>
                                 </div>
 
-                                <div className="text-sm text-emerald-900">
-                                    <span className="text-emerald-900/80">Edad:</span> {u.age}
+                                <div className="admin-users-detail">
+                                    <span className="admin-users-label">Edad:</span> {u.age}
                                 </div>
 
-                                <div className="text-sm text-emerald-900">
-                                    <span className="text-emerald-900/80">Ciudad:</span> {u.address?.city || "-"}
+                                <div className="admin-users-detail">
+                                    <span className="admin-users-label">Ciudad:</span> {u.address?.city || "-"}
                                 </div>
                             </div>
 
-                            <div className="flex shrink-0 flex-col items-end gap-2">
-                                <span className="rounded-lg border border-emerald-200 bg-white/90 px-2 py-1 text-xs text-emerald-900">
-                                    ID {u.id}
-                                </span>
+                            <div className="admin-users-actions">
+                                <span className="admin-users-id">ID {u.id}</span>
                                 <button
                                     onClick={() => deleteMutation.mutate(u.id)}
                                     disabled={deleteMutation.isPending}
-                                    className="rounded-lg border border-red-300 bg-red-100 px-3 py-1.5 text-xs font-semibold text-red-700 transition hover:bg-red-200 disabled:opacity-60"
+                                    className="admin-users-delete-btn"
                                 >
                                     Borrar usuario
                                 </button>
