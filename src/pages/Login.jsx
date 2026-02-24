@@ -91,17 +91,11 @@ export default function Login() {
             <div className="pointer-events-none absolute -right-10 bottom-10 h-64 w-64 rounded-full bg-emerald-200/30 blur-3xl" />
 
             <div className="w-full max-w-md rounded-3xl border border-emerald-200 bg-white/95 p-7 shadow-xl">
-                <p className="text-xs uppercase tracking-[0.25em] text-emerald-700">Recordatorios inteligentes</p>
+                <p className="text-xs uppercase tracking-[0.25em] text-emerald-700">MemoryCare</p>
                 <h1 className="mt-2 text-3xl font-bold tracking-tight">Iniciar sesión</h1>
 
                 <p className="mt-3 text-sm text-emerald-900/80">
                     Organiza tus tareas personales futuras y recibe un flujo claro para que siempre recuerdes qué hacer.
-                </p>
-                <p className="mt-2 text-xs text-emerald-700/80">
-                    Demo DummyJSON:
-                    <span className="ml-2 rounded-md border border-emerald-200 bg-emerald-50 px-2 py-0.5 font-mono text-emerald-900">
-                        emilys / emilyspass
-                    </span>
                 </p>
 
                 <form onSubmit={onSubmit} className="mt-6 space-y-4">

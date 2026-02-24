@@ -54,7 +54,7 @@ export default function Dashboard() {
                 <p className="text-xs uppercase tracking-[0.2em] text-emerald-700">Bienvenida</p>
                 <h2 className="mt-1 text-3xl font-bold tracking-tight">Inicio</h2>
                 <p className="mt-3 text-emerald-950">
-                    Hola, <b>{user?.username}</b> {isAdmin ? "(Administrador)" : "(Usuario)"}. Este inicio está pensado para que
+                    Hola, <b>{user?.username}</b>. Este inicio está pensado para que
                     tengas una experiencia completa, visual y práctica para organizar tareas futuras y evitar olvidos.
                 </p>
                 <p className="mt-3 text-sm text-emerald-900/90">

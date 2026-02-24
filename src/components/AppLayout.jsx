@@ -16,7 +16,7 @@ export default function AppLayout() {
                 <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
                     <div>
                         <p className="text-xs uppercase tracking-[0.25em] text-emerald-700">Organizador personal</p>
-                        <h1 className="text-lg font-semibold tracking-tight text-emerald-950">Proyecto React Evaluación</h1>
+                        <h1 className="text-lg font-semibold tracking-tight text-emerald-950">MemoryCare</h1>
                     </div>
 
                     <div className="flex items-center gap-3">
