@@ -72,7 +72,7 @@ export default function Dashboard() {
             </section>
 
             <section className="dashboard-card">
-                <h3 className="dashboard-card-title">Video de apoyo</h3>
+                <h3 className="dashboard-card-title">Video de apoyo Alzheimer</h3>
                 <p className="dashboard-card-subtitle">Recurso visual sobre memoria y cuidado en adultos mayores.</p>
                 <div className="dashboard-video-wrap">
                     <div className="dashboard-video-ratio">
