@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/auth.store";
 
 const quickStats = [
@@ -17,17 +16,9 @@ const activity = [
 
 export default function Admin() {
     const user = useAuthStore((s) => s.user);
-    const navigate = useNavigate();
 
     return (
         <div className="space-y-5 text-emerald-950">
-            <button
-                onClick={() => navigate(-1)}
-                className="rounded-xl border border-emerald-200 bg-white/90 px-4 py-2 text-sm font-medium transition hover:bg-emerald-100"
-            >
-                ← Volver
-            </button>
-
             <section className="rounded-3xl border border-emerald-200 bg-white/90 p-5">
                 <p className="text-xs uppercase tracking-[0.2em] text-emerald-700">Panel de control</p>
                 <h2 className="mt-1 text-2xl font-bold">Admin Center</h2>

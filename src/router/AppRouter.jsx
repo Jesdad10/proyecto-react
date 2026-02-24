@@ -20,11 +20,11 @@ export default function AppRouter() {
                 <Route element={<AppLayout />}>
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/tareas" element={<Todos />} />
-                </Route>
 
-                <Route element={<RoleRoute role="admin" />}>
-                    <Route path="/admin" element={<Admin />} />
-                    <Route path="/admin/usuarios" element={<AdminUsers />} />
+                    <Route element={<RoleRoute role="admin" />}>
+                        <Route path="/admin" element={<Admin />} />
+                        <Route path="/admin/usuarios" element={<AdminUsers />} />
+                    </Route>
                 </Route>
             </Route>
 

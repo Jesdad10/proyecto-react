@@ -1,12 +1,10 @@
 import { useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { usersService } from "../services/users.service";
 
 export default function AdminUsers() {
     const [q, setQ] = useState("");
-    const navigate = useNavigate();
     const qc = useQueryClient();
 
     const { data, isLoading, isError, error } = useQuery({
@@ -47,15 +45,8 @@ export default function AdminUsers() {
 
     return (
         <div className="space-y-4">
-            <button
-                onClick={() => navigate(-1)}
-                className="rounded-xl border border-emerald-200 bg-white/90 px-4 py-2 text-sm font-medium transition hover:bg-emerald-100"
-            >
-                ← Volver
-            </button>
-
             <div className="rounded-2xl border border-emerald-200 bg-white/90 p-5 backdrop-blur">
-                <h2 className="text-2xl font-bold">Usuarios (Admin)</h2>
+                <h2 className="text-2xl font-bold text-emerald-950">Usuarios (Admin)</h2>
                 <p className="mt-1 text-sm text-emerald-900/80">
                     Listado de usuarios desde DummyJSON (sin contraseñas, como debe ser).
                 </p>
