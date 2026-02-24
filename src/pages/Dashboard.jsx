@@ -1,4 +1,5 @@
 import { useAuthStore } from "../store/auth.store";
+import "../styles/dashboard.css";
 
 const tips = [
     "Crea tareas cortas y específicas para recordar mejor.",
@@ -49,100 +50,96 @@ export default function Dashboard() {
     const isAdmin = useAuthStore((s) => s.isAdmin);
 
     return (
-        <div className="space-y-6 pb-10 text-emerald-950">
-            <section className="rounded-3xl border border-emerald-200 bg-white/90 p-6 shadow-xl">
-                <p className="text-xs uppercase tracking-[0.2em] text-emerald-700">Bienvenida</p>
-                <h2 className="mt-1 text-3xl font-bold tracking-tight">Inicio</h2>
-                <p className="mt-3 text-emerald-950">
-                    Hola, <b>{user?.username}</b>. Este inicio está pensado para que
-                    tengas una experiencia completa, visual y práctica para organizar tareas futuras y evitar olvidos.
+        <div className="dashboard-page">
+            <section className="dashboard-hero">
+                <p className="dashboard-kicker">Bienvenida</p>
+                <h2 className="dashboard-title">Inicio</h2>
+                <p className="dashboard-text">
+                    Hola, <b>{user?.username}</b> {isAdmin ? "(Administrador)" : "(Usuario)"}. Este inicio está pensado para
+                    que tengas una experiencia completa, visual y práctica para organizar tareas futuras y evitar olvidos.
                 </p>
-                <p className="mt-3 text-sm text-emerald-900/90">
-                    Muchas familias conviven con desafíos de memoria, especialmente en adultos mayores o personas con
-                    deterioro cognitivo como Alzheimer. Esta vista prioriza claridad, seguimiento y hábito diario.
+                <p className="dashboard-subtext">
+                    Muchas familias conviven con desafíos de memoria, especialmente en adultos mayores o personas con deterioro
+                    cognitivo como Alzheimer. Esta vista prioriza claridad, seguimiento y hábito diario.
                 </p>
 
-                <div className="mt-4 flex flex-wrap gap-2 text-xs">
-                    <span className="rounded-full border border-emerald-300 bg-emerald-100 px-3 py-1 text-emerald-700">Recordar</span>
-                    <span className="rounded-full border border-green-200 bg-green-50 px-3 py-1 text-green-800">Organizar</span>
-                    <span className="rounded-full border border-lime-200 bg-lime-50 px-3 py-1 text-lime-800">Acompañar</span>
-                    <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-emerald-700">Progresar</span>
+                <div className="dashboard-chip-list">
+                    <span className="dashboard-chip">Recordar</span>
+                    <span className="dashboard-chip dashboard-chip-alt">Organizar</span>
+                    <span className="dashboard-chip dashboard-chip-soft">Acompañar</span>
+                    <span className="dashboard-chip">Progresar</span>
                 </div>
             </section>
 
-            <section className="rounded-3xl border border-emerald-200 bg-white/90 p-5">
-                <h3 className="text-xl font-semibold text-emerald-900">Video de apoyo</h3>
-                <p className="mt-1 text-sm text-emerald-900/85">
-                    Recurso visual sobre memoria y cuidado en adultos mayores.
-                </p>
-                <div className="mt-4 overflow-hidden rounded-2xl border border-emerald-200 bg-emerald-50 p-2">
-                    <div className="aspect-video overflow-hidden rounded-xl">
+            <section className="dashboard-card">
+                <h3 className="dashboard-card-title">Video de apoyo</h3>
+                <p className="dashboard-card-subtitle">Recurso visual sobre memoria y cuidado en adultos mayores.</p>
+                <div className="dashboard-video-wrap">
+                    <div className="dashboard-video-ratio">
                         <iframe
-                            className="h-full w-full"
-                            src="https://www.youtube.com/embed/b_zXEIe7Sys?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&fs=0"
-                            title="Video"
+                            className="dashboard-video"
+                            src="https://www.youtube.com/embed/8HLEr-zP3fc"
+                            title="Video de YouTube sobre apoyo de memoria"
                             loading="lazy"
-                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerPolicy="strict-origin-when-cross-origin"
                             allowFullScreen
                         />
-
                     </div>
                 </div>
             </section>
 
-            <section className="grid grid-cols-3 gap-4 md:grid-cols-2 sm:grid-cols-1">
+            <section className="dashboard-grid dashboard-grid-3">
                 {pillars.map((item) => (
-                    <article key={item.title} className="rounded-2xl border border-emerald-200 bg-white p-5 transition hover:-translate-y-0.5 hover:bg-emerald-50">
-                        <h4 className="font-semibold text-emerald-900">{item.title}</h4>
-                        <p className="mt-2 text-sm text-emerald-950/95">{item.text}</p>
+                    <article key={item.title} className="dashboard-card dashboard-hover">
+                        <h4 className="dashboard-item-title">{item.title}</h4>
+                        <p className="dashboard-item-text">{item.text}</p>
                     </article>
                 ))}
             </section>
 
-            <section className="rounded-3xl border border-emerald-200 bg-emerald-50/60 p-5">
-                <h3 className="text-xl font-semibold text-emerald-900">Guía rápida para usar Inicio</h3>
-                <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-1">
+            <section className="dashboard-card dashboard-card-soft">
+                <h3 className="dashboard-card-title">Guía rápida para usar Inicio</h3>
+                <div className="dashboard-grid dashboard-grid-2">
                     {tips.map((tip) => (
-                        <div key={tip} className="rounded-2xl border border-emerald-200 bg-white p-3 text-sm text-emerald-950">
+                        <div key={tip} className="dashboard-tip-item">
                             • {tip}
                         </div>
                     ))}
                 </div>
             </section>
 
-            <section className="grid grid-cols-2 gap-4 sm:grid-cols-1">
-                <article className="rounded-2xl border border-emerald-200 bg-white p-5">
-                    <h3 className="text-lg font-semibold text-emerald-900">Rutina recomendada</h3>
-                    <div className="mt-4 space-y-2">
+            <section className="dashboard-grid dashboard-grid-2">
+                <article className="dashboard-card">
+                    <h3 className="dashboard-card-title">Rutina recomendada</h3>
+                    <div className="dashboard-list">
                         {timeline.map((step) => (
-                            <div key={step.hour} className="flex items-center justify-between rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2">
-                                <span className="rounded-md border border-emerald-300 bg-emerald-200 px-2 py-0.5 text-xs font-semibold text-emerald-900">
-                                    {step.hour}
-                                </span>
-                                <span className="ml-3 text-sm text-emerald-950">{step.action}</span>
+                            <div key={step.hour} className="dashboard-list-item">
+                                <span className="dashboard-time-pill">{step.hour}</span>
+                                <span className="dashboard-list-text">{step.action}</span>
                             </div>
                         ))}
                     </div>
                 </article>
 
-                <article className="rounded-2xl border border-emerald-200 bg-white p-5">
-                    <h3 className="text-lg font-semibold text-emerald-900">Preguntas frecuentes</h3>
-                    <div className="mt-4 space-y-3">
+                <article className="dashboard-card">
+                    <h3 className="dashboard-card-title">Preguntas frecuentes</h3>
+                    <div className="dashboard-faq-list">
                         {faqs.map((item) => (
-                            <div key={item.q} className="rounded-xl border border-emerald-200 bg-emerald-50 p-3">
-                                <p className="text-sm font-semibold text-emerald-900">{item.q}</p>
-                                <p className="mt-1 text-sm text-emerald-900/85">{item.a}</p>
+                            <div key={item.q} className="dashboard-faq-item">
+                                <p className="dashboard-faq-question">{item.q}</p>
+                                <p className="dashboard-faq-answer">{item.a}</p>
                             </div>
                         ))}
                     </div>
                 </article>
             </section>
 
-            <section className="rounded-3xl border border-emerald-300 bg-gradient-to-r from-emerald-100 to-lime-100 p-6">
-                <h3 className="text-2xl font-bold text-emerald-900">Sigue bajando: aquí siempre tendrás contexto útil</h3>
-                <p className="mt-2 max-w-3xl text-sm text-emerald-950/95">
-                    Este inicio ahora es más completo para que no solo veas una portada, sino también contenido práctico
-                    que ayude a transformar tareas sueltas en hábitos y apoyo real para el día a día.
+            <section className="dashboard-cta">
+                <h3 className="dashboard-cta-title">Sigue bajando: aquí siempre tendrás contexto útil</h3>
+                <p className="dashboard-cta-text">
+                    Este inicio ahora es más completo para que no solo veas una portada, sino también contenido práctico que
+                    ayude a transformar tareas sueltas en hábitos y apoyo real para el día a día.
                 </p>
             </section>
         </div>

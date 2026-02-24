@@ -1,10 +1,10 @@
 import { useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { todosService } from "../services/todos.service";
 import { useAuthStore } from "../store/auth.store";
-import { createPortal } from "react-dom";
-
+import "../styles/todos.css";
 
 const UNDO_MS = 4000;
 
@@ -71,7 +71,7 @@ export default function Todos() {
                     todos: (old.todos || []).map((t) => (t.id === updated.id ? { ...t, ...updated } : t)),
                 };
             });
-            toast.success("Estado actualizado");
+            toast.success("Estado actualizado (PATCH)");
         },
         onError: (e) => toast.error(e.message),
     });
@@ -86,7 +86,7 @@ export default function Todos() {
                     todos: (old.todos || []).map((t) => (t.id === updated.id ? { ...t, ...updated } : t)),
                 };
             });
-            toast.success("Tarea editada");
+            toast.success("Tarea editada (PUT)");
         },
         onError: (e) => toast.error(e.message),
     });
@@ -104,14 +104,14 @@ export default function Todos() {
     const showUndoToast = ({ key, message, onUndo, onCommit }) => {
         const toastId = toast(
             ({ closeToast }) => (
-                <div className="flex items-center justify-between gap-4">
-                    <div className="min-w-0">
-                        <div className="font-semibold">{message}</div>
-                        <div className="text-xs opacity-80">Se aplicará al terminar la barra.</div>
+                <div className="todos-toast-row">
+                    <div className="todos-toast-text-wrap">
+                        <div className="todos-toast-title">{message}</div>
+                        <div className="todos-toast-subtitle">Se aplicará al terminar la barra.</div>
                     </div>
 
                     <button
-                        className="rounded-lg border border-slate-500/40 bg-slate-500/10 px-3 py-1 text-xs font-semibold hover:bg-slate-500/20"
+                        className="todos-toast-undo"
                         onClick={() => {
                             clearPending(key);
                             onUndo?.();
@@ -151,7 +151,7 @@ export default function Todos() {
 
         showUndoToast({
             key,
-            message: "Tarea añadida",
+            message: "Tarea añadida (POST)",
             onUndo: () => {
                 setNewTodo(text);
                 toast.info("Añadido cancelado");
@@ -174,7 +174,7 @@ export default function Todos() {
 
         showUndoToast({
             key,
-            message: "Tarea borrada",
+            message: "Tarea borrada (DELETE)",
             onUndo: () => {
                 qc.setQueryData(["todos"], (old) => {
                     if (!old) return old;
@@ -252,65 +252,47 @@ export default function Todos() {
     }, [todos, q, filter]);
 
     if (isLoading) {
-        return <div className="text-slate-300">Cargando tareas…</div>;
+        return <div className="todos-loading">Cargando tareas…</div>;
     }
     if (isError) {
-        return <div className="text-red-300">{error.message}</div>;
+        return <div className="todos-error">{error.message}</div>;
     }
 
     return (
-        <div className="space-y-6">
-            <section className="rounded-3xl border border-emerald-200 bg-white/90 p-6">
-                <div className="flex items-start justify-between gap-4 md:flex-col">
+        <div className="todos-page">
+            <section className="todos-header-card">
+                <div className="todos-header-row">
                     <div>
-                        <p className="text-xs uppercase tracking-[0.22em] text-emerald-700">Panel de tareas</p>
-                        <h2 className="mt-1 text-3xl font-bold tracking-tight">Tus recordatorios futuros</h2>
-                        <p className="mt-2 text-sm text-emerald-800">
+                        <p className="todos-kicker">Panel de tareas</p>
+                        <h2 className="todos-title">Tus recordatorios futuros</h2>
+                        <p className="todos-description">
                             Mantén el mismo flujo CRUD, ahora con una vista más clara para planificar lo que debes hacer.
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-3 gap-3 md:w-full">
+                    <div className="todos-stats-grid">
                         <Stat label="Total" value={stats.total} />
                         <Stat label="Pendientes" value={stats.pending} />
                         <Stat label="Hechas" value={stats.done} />
                     </div>
                 </div>
 
-                <div className="mt-5 grid grid-cols-12 gap-3">
-                    <div className="col-span-6 md:col-span-12">
-                        <div className="flex gap-2 md:flex-col">
-                            <input
-                                value={newTodo}
-                                onChange={(e) => setNewTodo(e.target.value)}
-                                placeholder="Nueva tarea..."
-                                className="flex-1 rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2.5 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
-                            />
-                            <button
-                                onClick={requestAdd}
-                                disabled={!newTodo.trim() || addMutation.isPending}
-                                className="rounded-xl border border-emerald-400/70 bg-emerald-600 text-white px-4 py-2.5 font-semibold transition hover:bg-emerald-700 disabled:opacity-60 md:w-full"
-                            >
+                <div className="todos-controls-grid">
+                    <div className="todos-controls-span-6">
+                        <div className="todos-add-wrap">
+                            <input value={newTodo} onChange={(e) => setNewTodo(e.target.value)} placeholder="Nueva tarea..." className="todos-input" />
+                            <button onClick={requestAdd} disabled={!newTodo.trim() || addMutation.isPending} className="todos-add-btn">
                                 Añadir
                             </button>
                         </div>
                     </div>
 
-                    <div className="col-span-4 md:col-span-12">
-                        <input
-                            value={q}
-                            onChange={(e) => setQ(e.target.value)}
-                            placeholder="Buscar..."
-                            className="w-full rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2.5 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
-                        />
+                    <div className="todos-controls-span-4">
+                        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Buscar..." className="todos-input" />
                     </div>
 
-                    <div className="col-span-2 md:col-span-12">
-                        <select
-                            value={filter}
-                            onChange={(e) => setFilter(e.target.value)}
-                            className="w-full rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2.5 outline-none transition focus:border-emerald-500"
-                        >
+                    <div className="todos-controls-span-2">
+                        <select value={filter} onChange={(e) => setFilter(e.target.value)} className="todos-select">
                             <option value="all">Todas</option>
                             <option value="pending">Pendientes</option>
                             <option value="done">Hechas</option>
@@ -319,61 +301,36 @@ export default function Todos() {
                 </div>
             </section>
 
-
             {visible.length === 0 ? (
-                <div className="rounded-2xl border border-dashed border-emerald-300 bg-emerald-50 p-10 text-center text-emerald-800">
-                    No hay tareas con ese filtro.
-                </div>
+                <div className="todos-empty">No hay tareas con ese filtro.</div>
             ) : (
-                <div className="grid grid-cols-2 gap-4 sm:grid-cols-1">
+                <div className="todos-grid">
                     {visible.map((t) => (
-                        <article
-                            key={t._localId || t.id}
-                            className="rounded-2xl border border-emerald-200 bg-white p-4 transition hover:bg-emerald-50"
-                        >
-                            <div className="flex items-start justify-between gap-3">
-                                <div className="min-w-0">
-                                    <div className="flex items-center gap-2">
-                                        <span className="rounded-lg border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-xs text-emerald-800">
-                                            #{t.id}
-                                        </span>
-                                        <span
-                                            className={[
-                                                "rounded-lg border px-2 py-0.5 text-xs",
-                                                t.completed === true
-                                                    ? "border-emerald-300 bg-emerald-100 text-emerald-800"
-                                                    : t.completed === false
-                                                        ? "border-amber-300 bg-amber-100 text-amber-800"
-                                                        : "border-slate-300 bg-slate-100 text-slate-700",
-                                            ].join(" ")}
-                                        >
-                                            {t.completed === true ? "Hecha" : t.completed === false ? "Pendiente" : "Sin estado"}
-                                        </span>
+                        <article key={t._localId || t.id} className="todos-item-card">
+                            <div className="todos-item-row">
+                                <div className="todos-item-main">
+                                    <div className="todos-item-badges">
+                                        <span className="todos-id-badge">#{t.id}</span>
+                                        <span className={statusClassName(t.completed)}>{statusLabel(t.completed)}</span>
                                     </div>
 
-                                    <p className="mt-2 break-words text-base font-semibold text-emerald-950">{t.todo}</p>
+                                    <p className="todos-item-text">{t.todo}</p>
                                 </div>
 
-                                <div className="flex flex-col gap-2">
+                                <div className="todos-item-actions">
                                     <button
                                         onClick={() => toggleCompleted(t)}
                                         disabled={patchMutation.isPending && !t?._localOnly}
-                                        className="min-w-[150px] rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-sm text-center transition hover:bg-emerald-100"
+                                        className="todos-action-btn todos-action-btn-wide"
                                     >
                                         {t.completed === true ? "Marcar pendiente" : "Completar"}
                                     </button>
 
-                                    <button
-                                        onClick={() => openEdit(t)}
-                                        className="rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-sm transition hover:bg-emerald-100"
-                                    >
+                                    <button onClick={() => openEdit(t)} className="todos-action-btn">
                                         Editar
                                     </button>
 
-                                    <button
-                                        onClick={() => requestDelete(t)}
-                                        className="rounded-xl border border-red-300 bg-red-100 px-3 py-1.5 text-sm text-red-700 transition hover:bg-red-200"
-                                    >
+                                    <button onClick={() => requestDelete(t)} className="todos-delete-btn">
                                         Borrar
                                     </button>
                                 </div>
@@ -385,36 +342,22 @@ export default function Todos() {
 
             {editOpen &&
                 createPortal(
-                    <div className="fixed inset-0 z-[10000] grid h-dvh w-screen place-items-center bg-emerald-950/45 backdrop-blur-[1px] p-4">
-                        <div className="w-full max-w-lg rounded-3xl border border-emerald-300 bg-white p-5 text-emerald-950 shadow-2xl">
-                            <div className="flex items-center justify-between gap-3">
-                                <h3 className="text-lg font-bold text-emerald-950">Editar tarea</h3>
-                                <button
-                                    onClick={() => setEditOpen(false)}
-                                    className="rounded-xl border border-emerald-300 bg-white px-3 py-1.5 text-emerald-900 transition hover:bg-emerald-50"
-                                >
+                    <div className="todos-modal-overlay">
+                        <div className="todos-modal-card">
+                            <div className="todos-modal-header">
+                                <h3 className="todos-modal-title">Editar tarea</h3>
+                                <button onClick={() => setEditOpen(false)} className="todos-modal-close-btn">
                                     Cerrar
                                 </button>
                             </div>
 
-                            <textarea
-                                value={editValue}
-                                onChange={(e) => setEditValue(e.target.value)}
-                                className="mt-3 min-h-[110px] w-full rounded-xl border border-emerald-300 bg-white px-3 py-2 text-emerald-950 placeholder:text-emerald-500/70 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
-                            />
+                            <textarea value={editValue} onChange={(e) => setEditValue(e.target.value)} className="todos-modal-textarea" />
 
-                            <div className="mt-4 flex gap-2 md:flex-col">
-                                <button
-                                    onClick={saveEdit}
-                                    disabled={!editValue.trim() || putMutation.isPending}
-                                    className="flex-1 rounded-xl border border-emerald-700 bg-emerald-700 px-4 py-2 font-semibold text-white transition hover:bg-emerald-800 disabled:opacity-60"
-                                >
-                                    Guardar
+                            <div className="todos-modal-actions">
+                                <button onClick={saveEdit} disabled={!editValue.trim() || putMutation.isPending} className="todos-modal-save-btn">
+                                    Guardar (PUT)
                                 </button>
-                                <button
-                                    onClick={() => setEditOpen(false)}
-                                    className="flex-1 rounded-xl border border-emerald-300 bg-white px-4 py-2 text-emerald-900 transition hover:bg-emerald-50"
-                                >
+                                <button onClick={() => setEditOpen(false)} className="todos-modal-cancel-btn">
                                     Cancelar
                                 </button>
                             </div>
@@ -422,18 +365,27 @@ export default function Todos() {
                     </div>,
                     document.body
                 )}
-
-
         </div>
     );
 }
 
 function Stat({ label, value }) {
     return (
-        <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-3 text-center">
-            <div className="text-xs uppercase tracking-wider text-emerald-800">{label}</div>
-            <div className="text-lg font-bold text-emerald-950">{value}</div>
+        <div className="todos-stat-card">
+            <div className="todos-stat-label">{label}</div>
+            <div className="todos-stat-value">{value}</div>
         </div>
     );
 }
 
+function statusLabel(completed) {
+    if (completed === true) return "Hecha";
+    if (completed === false) return "Pendiente";
+    return "Sin estado";
+}
+
+function statusClassName(completed) {
+    if (completed === true) return "todos-status-badge todos-status-done";
+    if (completed === false) return "todos-status-badge todos-status-pending";
+    return "todos-status-badge todos-status-neutral";
+}

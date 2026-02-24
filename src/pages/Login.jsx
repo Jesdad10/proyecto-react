@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 import { useAuthStore } from "../store/auth.store";
+import "../styles/login.css";
 
 const schema = z.object({
     username: z.string().min(2, "Username obligatorio"),
@@ -27,8 +28,6 @@ async function loginRequest({ username, password }) {
             password,
             expiresInMins: 60,
         }),
-        // ✅ IMPORTANTE: NO usar credentials: "include" (CORS)
-        // credentials: "omit",
     });
 
     const text = await res.text();
@@ -86,51 +85,40 @@ export default function Login() {
     });
 
     return (
-        <div className="relative grid min-h-screen place-items-center overflow-hidden p-4 text-emerald-950">
-            <div className="pointer-events-none absolute -left-24 top-10 h-72 w-72 rounded-full bg-emerald-300/30 blur-3xl" />
-            <div className="pointer-events-none absolute -right-10 bottom-10 h-64 w-64 rounded-full bg-emerald-200/30 blur-3xl" />
+        <div className="login-page">
+            <div className="login-orb login-orb-left" />
+            <div className="login-orb login-orb-right" />
 
-            <div className="w-full max-w-md rounded-3xl border border-emerald-200 bg-white/95 p-7 shadow-xl">
-                <p className="text-xs uppercase tracking-[0.25em] text-emerald-700">MemoryCare</p>
-                <h1 className="mt-2 text-3xl font-bold tracking-tight">Iniciar sesión</h1>
+            <div className="login-card">
+                <p className="login-kicker">Recordatorios inteligentes</p>
+                <h1 className="login-title">Iniciar sesión</h1>
 
-                <p className="mt-3 text-sm text-emerald-900/80">
+                <p className="login-description">
                     Organiza tus tareas personales futuras y recibe un flujo claro para que siempre recuerdes qué hacer.
                 </p>
+                <p className="login-demo-text">
+                    Demo DummyJSON:
+                    <span className="login-demo-pill">emilys / emilyspass</span>
+                </p>
 
-                <form onSubmit={onSubmit} className="mt-6 space-y-4">
+                <form onSubmit={onSubmit} className="login-form">
                     <div>
-                        <label className="text-sm text-emerald-900">Username</label>
-                        <input
-                            className="mt-1 w-full rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2.5 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
-                            {...form.register("username")}
-                        />
+                        <label className="login-label">Username</label>
+                        <input className="login-input" {...form.register("username")} />
                         {form.formState.errors.username && (
-                            <p className="mt-1 text-sm text-red-600">
-                                {form.formState.errors.username.message}
-                            </p>
+                            <p className="login-error">{form.formState.errors.username.message}</p>
                         )}
                     </div>
 
                     <div>
-                        <label className="text-sm text-emerald-900">Password</label>
-                        <input
-                            type="password"
-                            className="mt-1 w-full rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2.5 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
-                            {...form.register("password")}
-                        />
+                        <label className="login-label">Password</label>
+                        <input type="password" className="login-input" {...form.register("password")} />
                         {form.formState.errors.password && (
-                            <p className="mt-1 text-sm text-red-600">
-                                {form.formState.errors.password.message}
-                            </p>
+                            <p className="login-error">{form.formState.errors.password.message}</p>
                         )}
                     </div>
 
-                    <button
-                        type="submit"
-                        disabled={loginMutation.isPending}
-                        className="w-full rounded-xl border border-emerald-400/70 bg-emerald-600 px-3 py-2.5 font-semibold text-white transition hover:bg-emerald-700 disabled:opacity-60"
-                    >
+                    <button type="submit" disabled={loginMutation.isPending} className="login-submit">
                         {loginMutation.isPending ? "Entrando..." : "Entrar"}
                     </button>
                 </form>
