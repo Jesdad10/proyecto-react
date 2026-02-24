@@ -28,12 +28,14 @@ export default function Todos() {
         queryFn: () => todosService.list(30, 0),
     });
 
-    const updateTodoLocal = (id, updater) => {
+    const getTodoIdentity = (todo) => todo?._localId || `remote-${todo?.id}`;
+
+    const updateTodoLocal = (todoIdentity, updater) => {
         qc.setQueryData(["todos"], (old) => {
             if (!old) return old;
             return {
                 ...old,
-                todos: (old.todos || []).map((t) => (t.id === id ? updater(t) : t)),
+                todos: (old.todos || []).map((t) => (getTodoIdentity(t) === todoIdentity ? updater(t) : t)),
             };
         });
     };
@@ -161,13 +163,14 @@ export default function Todos() {
     };
 
     const requestDelete = (todoItem) => {
-        const key = `del-${todoItem.id}-${Date.now()}`;
+        const todoIdentity = getTodoIdentity(todoItem);
+        const key = `del-${todoIdentity}-${Date.now()}`;
 
         qc.setQueryData(["todos"], (old) => {
             if (!old) return old;
             return {
                 ...old,
-                todos: (old.todos || []).filter((t) => t.id !== todoItem.id),
+                todos: (old.todos || []).filter((t) => getTodoIdentity(t) !== todoIdentity),
                 total: Math.max(0, (old.total ?? 0) - 1),
             };
         });
@@ -195,7 +198,7 @@ export default function Todos() {
     const toggleCompleted = (t) => {
         if (t?._localOnly) {
             const nextCompleted = t.completed === true ? false : true;
-            updateTodoLocal(t.id, (old) => ({ ...old, completed: nextCompleted }));
+            updateTodoLocal(getTodoIdentity(t), (old) => ({ ...old, completed: nextCompleted }));
             toast.success("Estado actualizado");
             return;
         }
@@ -214,7 +217,7 @@ export default function Todos() {
         if (!editItem || !text) return;
 
         if (editItem?._localOnly) {
-            updateTodoLocal(editItem.id, (old) => ({ ...old, todo: text }));
+            updateTodoLocal(getTodoIdentity(editItem), (old) => ({ ...old, todo: text }));
             toast.success("Tarea local editada");
             setEditOpen(false);
             setEditItem(null);
@@ -355,7 +358,7 @@ export default function Todos() {
 
                             <div className="todos-modal-actions">
                                 <button onClick={saveEdit} disabled={!editValue.trim() || putMutation.isPending} className="todos-modal-save-btn">
-                                    Guardar (PUT)
+                                    Guardar
                                 </button>
                                 <button onClick={() => setEditOpen(false)} className="todos-modal-cancel-btn">
                                     Cancelar
