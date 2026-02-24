@@ -90,7 +90,7 @@ export default function Login() {
             <div className="login-orb login-orb-right" />
 
             <div className="login-card">
-                <p className="login-kicker">Recordatorios inteligentes</p>
+                <p className="login-kicker">MemoryCare</p>
                 <h1 className="login-title">Iniciar sesión</h1>
 
                 <p className="login-description">

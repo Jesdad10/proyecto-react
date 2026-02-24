@@ -71,7 +71,7 @@ export default function Todos() {
                     todos: (old.todos || []).map((t) => (t.id === updated.id ? { ...t, ...updated } : t)),
                 };
             });
-            toast.success("Estado actualizado (PATCH)");
+            toast.success("Estado actualizado");
         },
         onError: (e) => toast.error(e.message),
     });
@@ -86,7 +86,7 @@ export default function Todos() {
                     todos: (old.todos || []).map((t) => (t.id === updated.id ? { ...t, ...updated } : t)),
                 };
             });
-            toast.success("Tarea editada (PUT)");
+            toast.success("Tarea editada");
         },
         onError: (e) => toast.error(e.message),
     });
@@ -151,7 +151,7 @@ export default function Todos() {
 
         showUndoToast({
             key,
-            message: "Tarea añadida (POST)",
+            message: "Tarea añadida",
             onUndo: () => {
                 setNewTodo(text);
                 toast.info("Añadido cancelado");
@@ -174,7 +174,7 @@ export default function Todos() {
 
         showUndoToast({
             key,
-            message: "Tarea borrada (DELETE)",
+            message: "Tarea borrada",
             onUndo: () => {
                 qc.setQueryData(["todos"], (old) => {
                     if (!old) return old;
@@ -196,7 +196,7 @@ export default function Todos() {
         if (t?._localOnly) {
             const nextCompleted = t.completed === true ? false : true;
             updateTodoLocal(t.id, (old) => ({ ...old, completed: nextCompleted }));
-            toast.success("Estado actualizado (local)");
+            toast.success("Estado actualizado");
             return;
         }
 

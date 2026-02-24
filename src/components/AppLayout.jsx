@@ -17,7 +17,7 @@ export default function AppLayout() {
                 <div className="app-header-row">
                     <div>
                         <p className="app-kicker">Organizador personal</p>
-                        <h1 className="app-title">Proyecto React Evaluación</h1>
+                        <h1 className="app-title">MemoryCare</h1>
                     </div>
 
                     <div className="app-header-actions">

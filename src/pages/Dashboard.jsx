@@ -55,7 +55,7 @@ export default function Dashboard() {
                 <p className="dashboard-kicker">Bienvenida</p>
                 <h2 className="dashboard-title">Inicio</h2>
                 <p className="dashboard-text">
-                    Hola, <b>{user?.username}</b> {isAdmin ? "(Administrador)" : "(Usuario)"}. Este inicio está pensado para
+                    Hola, <b>{user?.username}</b>. Este inicio está pensado para
                     que tengas una experiencia completa, visual y práctica para organizar tareas futuras y evitar olvidos.
                 </p>
                 <p className="dashboard-subtext">
@@ -76,15 +76,13 @@ export default function Dashboard() {
                 <p className="dashboard-card-subtitle">Recurso visual sobre memoria y cuidado en adultos mayores.</p>
                 <div className="dashboard-video-wrap">
                     <div className="dashboard-video-ratio">
-                        <iframe
-                            className="dashboard-video"
-                            src="https://www.youtube.com/embed/8HLEr-zP3fc"
-                            title="Video de YouTube sobre apoyo de memoria"
-                            loading="lazy"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            referrerPolicy="strict-origin-when-cross-origin"
-                            allowFullScreen
-                        />
+                        <div className="relative w-full h-full overflow-hidden">
+                            <iframe
+                                className="absolute top-0 left-0 w-full h-full pointer-events-none"
+                                src="https://www.youtube.com/embed/b_zXEIe7Sys?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&iv_load_policy=3&loop=1&playlist=b_zXEIe7Sys"
+                                allow="autoplay"
+                            />
+                        </div>
                     </div>
                 </div>
             </section>
