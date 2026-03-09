@@ -1,16 +1,105 @@
-# React + Vite
+# Proyecto React Evaluación — Gestor de Tareas con Roles (Usuario/Admin)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación web desarrollada con **React + Vite** para la gestión de tareas y organización diaria.  
+Incluye autenticación con API, control de acceso por roles, rutas protegidas, operaciones CRUD sobre tareas y paneles diferenciados para usuario y administrador.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📌 Descripción del proyecto
 
-## React Compiler
+Este proyecto implementa una app de productividad enfocada en:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Autenticación de usuarios** mediante API (login).
+- **Panel de usuario** para gestionar tareas (crear, listar, editar, completar y eliminar).
+- **Panel de administrador** con vistas exclusivas y gestión de usuarios.
+- **Navegación con rutas protegidas** y control por rol.
+- **Diseño responsive** adaptado a distintos tamaños de pantalla.
 
-## Expanding the ESLint configuration
+La arquitectura se organiza por responsabilidades (`pages`, `components`, `services`, `store`, `router`, `styles`) para mantener un enfoque profesional y escalable.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🧱 Stack tecnológico
+
+### Librerías principales
+- **react-router-dom** `^7.13.0` → enrutado de la SPA
+- **@tanstack/react-query** `^5.90.21` → gestión de estado servidor/cache
+- **react-hook-form** `^7.71.1` → formularios
+- **zod** `^4.3.6` + **@hookform/resolvers** `^5.2.2` → validación de formularios
+- **zustand** `^5.0.11` → estado global de autenticación
+- **react-toastify** `^11.0.5` → notificaciones
+- **tailwindcss**  + PostCSS/Autoprefixer → base de estilos utilitarios
+
+> Nota: **No se usa Axios**; las peticiones se realizan con `fetch`.
+
+---
+
+## ✅ Funcionalidades implementadas
+
+- Login con API y persistencia de sesión.
+- Rutas públicas y privadas.
+- Control de acceso por rol (`admin` / `usuario`).
+- CRUD de tareas:
+  - `GET` listado
+  - `POST` creación
+  - `PATCH` actualización parcial
+  - `PUT` edición completa
+  - `DELETE` eliminación
+- Gestión de usuarios para administrador.
+- Diseño responsive con breakpoints de proyecto:
+  - `990px`
+  - `767px`
+  - `510px`
+  - `480px`
+
+---
+
+## 📁 Estructura del proyecto
+
+```bash
+src/
+  components/
+    AppLayout.jsx
+    ProtectedRoute.jsx
+    RoleRoute.jsx
+  pages/
+    Login.jsx
+    Dashboard.jsx
+    Todos.jsx
+    Admin.jsx
+    AdminUsers.jsx
+    NotFound.jsx
+  router/
+    AppRouter.jsx
+  services/
+    auth.service.js
+    todos.service.js
+    users.service.js
+    http.js
+  store/
+    auth.store.js
+  styles/
+    admin.css
+    dashboard.css
+    todos.css
+    login.css
+    layout.css
+  main.jsx
+  App.jsx
+
+
+# 1) Clonar repositorio
+git clone <URL_DEL_REPO>
+cd <NOMBRE_DEL_REPO>
+
+# 2) Instalar dependencias
+npm install
+
+# 3) Ejecutar en desarrollo
+npm run dev
+
+# 4) Compilar para producción
+npm run build
+
+# 5) Previsualizar build
+npm run preview
