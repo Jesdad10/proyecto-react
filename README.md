@@ -55,20 +55,20 @@ La arquitectura se organiza por responsabilidades (`pages`, `components`, `servi
 ---
 
 ## Instalación Repositorio
-- 1) Clonar repositorio
+- Clonar repositorio
 git clone <URL_DEL_REPO>
 cd <NOMBRE_DEL_REPO>
 
-- 2) Instalar dependencias
+- Instalar dependencias
 npm install
 
-- 3) Ejecutar en desarrollo
+- Ejecutar en desarrollo
 npm run dev
 
-- 4) Compilar para producción
+- Compilar para producción
 npm run build
 
-- 5) Previsualizar build
+- Previsualizar build
 npm run preview
 
 ## 📁 Estructura del proyecto
